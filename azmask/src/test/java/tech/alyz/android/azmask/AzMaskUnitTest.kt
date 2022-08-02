@@ -17,7 +17,6 @@
 package tech.alyz.android.azmask
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**
@@ -53,7 +52,6 @@ class AzMaskUnitTest {
         assertEquals("711.776.380-11", formattedValue)
 
     }
-
 
     @Test
     fun groupMaskValidation_isCorrect() {
@@ -95,19 +93,13 @@ class AzMaskUnitTest {
             numberFactory.createMask(16),
             numberFactory.createMask(17),
         )
-
         val azMaskGroup = AzMaskGroup(arrayListOf(cpfMasks, cnpjMasks))
-
         var formattedValue = azMaskGroup.formatValue("a711776a38011")
 
         assertEquals("711.776.380-11", formattedValue)
-
         formattedValue = azMaskGroup.formatValue("07.44a2.741/0001-71")
-
         assertEquals("07.442.741/0001-71", formattedValue)
-
         assertEquals("07442741000171", azMaskGroup.azMasks[1].cleanTextCache)
-
 
     }
 }
