@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package tech.alyz.android.azmask
-/**
- * An interface that has the common formatting value behavior as the {@link AzMask}
- * and {@link AzMaskGroup}.
- */
-interface AzMaskFormatter {
-    fun formatValue(text: String): String
+ext {
+    projectName = 'azmask-android'
+    projectDesc = 'AzMask for Android'
+
+    companyUrl = 'https://www.alyz.tech'
+    githubUrl = 'https://github.com/alyztech/azmask-android'
+
+    mavenGroup = 'tech.alyz'
+    mavenArtifactId = 'azmask'
+    mavenVersion = '0.1.0'
+
 }

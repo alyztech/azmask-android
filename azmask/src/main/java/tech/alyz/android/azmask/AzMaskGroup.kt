@@ -16,13 +16,10 @@
 
 package tech.alyz.android.azmask
 
-class AzMaskGroup(private var azMasks: List<AzMask>): AzMaskFormatter {
+class AzMaskGroup(masks: List<List<Mask>>): AzMaskFormatter {
 
+    var azMasks: List<AzMask> = masks.sortedBy { it.size }.map { AzMask(it) }
     var textCache = ""
-
-    init {
-        this.azMasks = azMasks.sortedBy { it.masks.size }
-    }
 
     override fun formatValue(text: String): String {
         return if(text.isEmpty() || textCache == text) return text else {

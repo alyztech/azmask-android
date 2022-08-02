@@ -53,7 +53,6 @@ abstract class MaskFactory {
      */
     class LetterMaskFactory : MaskFactory() {
         override fun createMask(index: Int): Mask = Mask(MaskType.REGEX, "^[a-zA-Z]+$", index)
-
     }
 
     /**

@@ -75,7 +75,6 @@ class AzMaskUnitTest {
             numberFactory.createMask(13)
         )
 
-        val cpfMask = AzMask(cpfMasks)
         val cnpjMasks = arrayListOf(
             numberFactory.createMask(0),
             numberFactory.createMask(1),
@@ -97,9 +96,7 @@ class AzMaskUnitTest {
             numberFactory.createMask(17),
         )
 
-        val cnpjMask = AzMask(cnpjMasks)
-
-        val azMaskGroup = AzMaskGroup(arrayListOf(cpfMask, cnpjMask))
+        val azMaskGroup = AzMaskGroup(arrayListOf(cpfMasks, cnpjMasks))
 
         var formattedValue = azMaskGroup.formatValue("a711776a38011")
 
@@ -109,7 +106,7 @@ class AzMaskUnitTest {
 
         assertEquals("07.442.741/0001-71", formattedValue)
 
-        assertEquals("07442741000171", cnpjMask.cleanTextCache)
+        assertEquals("07442741000171", azMaskGroup.azMasks[1].cleanTextCache)
 
 
     }

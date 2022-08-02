@@ -1,0 +1,72 @@
+/*
+ * Copyright 2022 Alyz Tech
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives androidSourcesJar
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = mavenGroup
+                artifactId = mavenArtifactId
+                version = mavenVersion
+
+                pom {
+                    name = projectName
+                    description = projectDesc
+                    url = companyUrl
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = 'Caio Mansho'
+                        }
+                    }
+                    scm {
+                        connection = "${githubUrl}.git"
+                        url = githubUrl
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+            System.getenv("OSS_SIGNING_KEY_ID"),
+            System.getenv("OSS_SIGNING_KEY"),
+            System.getenv("OSS_SIGNING_PASSWORD"),
+    )
+    sign publishing.publications
+}

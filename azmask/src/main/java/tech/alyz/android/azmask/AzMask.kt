@@ -19,7 +19,6 @@ package tech.alyz.android.azmask
 import tech.alyz.android.azmask.MaskType.*
 
 class AzMask(var masks: List<Mask>): AzMaskFormatter {
-
     private var textCache = ""
     var cleanTextCache = ""
 
@@ -27,7 +26,7 @@ class AzMask(var masks: List<Mask>): AzMaskFormatter {
         this.masks = masks.sortedBy { it.index }
     }
 
-    private fun addToCache(result: StringBuilder, cleanResult: StringBuilder): String {
+    private fun updateCache(result: StringBuilder, cleanResult: StringBuilder): String {
         textCache = result.toString()
         cleanTextCache = cleanResult.toString()
         return textCache
@@ -54,21 +53,20 @@ class AzMask(var masks: List<Mask>): AzMaskFormatter {
                         cleanResult.append(text[it])
                         index = it + 1
                     } ?: run {
-                        return addToCache(result, cleanResult)
+                        return updateCache(result, cleanResult)
                     }
                 } else {
                     if (index == text.length - 1 && text[index].toString() == mask.value) {
                         // Remove fixed char
                         result.drop(result.length - 1)
-                        return addToCache(result, cleanResult)
-                    } else {
-                        result.append(mask.value)
+                        return updateCache(result, cleanResult)
                     }
+                    result.append(mask.value)
                 }
             }
             maskIndex++
         }
-        return addToCache(result, cleanResult)
+        return updateCache(result, cleanResult)
     }
 
     private fun validateRegex(text: String, pattern: Regex, index: Int): Int? {
