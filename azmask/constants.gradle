@@ -23,6 +23,6 @@ ext {
 
     mavenGroup = 'tech.alyz'
     mavenArtifactId = 'azmask'
-    mavenVersion = '0.1.0'
+    mavenVersion = '0.5.0'
 
 }

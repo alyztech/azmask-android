@@ -18,7 +18,7 @@ package tech.alyz.android.azmask
 
 import tech.alyz.android.azmask.MaskType.*
 
-class AzMask(var masks: List<Mask>): AzMaskFormatter {
+class AzMask(var masks: List<Mask>) : AzMaskFormatter {
     private var textCache = ""
     var cleanTextCache = ""
 
@@ -40,14 +40,13 @@ class AzMask(var masks: List<Mask>): AzMaskFormatter {
 
         while (index < text.length && maskIndex < masks.size) {
             val mask = masks[maskIndex]
-            if(index < textCache.length && textCache[index] == text[index]){
-                result.append(text[index])
-                if (mask.maskType == REGEX) {
-                    cleanResult.append(text[index])
-                }
-                index++
-            } else {
-                if (mask.maskType == REGEX) {
+            val currentChar = text[index]
+            if (mask.maskType == REGEX) {
+                if (index < textCache.length && textCache[index] == currentChar) {
+                    result.append(currentChar)
+                    cleanResult.append(currentChar)
+                    index++
+                } else {
                     validateRegex(text, mask.value.toRegex(), index)?.let {
                         result.append(text[it])
                         cleanResult.append(text[it])
@@ -55,14 +54,18 @@ class AzMask(var masks: List<Mask>): AzMaskFormatter {
                     } ?: run {
                         return updateCache(result, cleanResult)
                     }
-                } else {
-                    if (index == text.length - 1 && text[index].toString() == mask.value) {
+                }
+            } else {
+                if(currentChar.toString() == mask.value) {
+                    if (index == text.length - 1) {
                         // Remove fixed char
                         result.drop(result.length - 1)
                         return updateCache(result, cleanResult)
+                    } else {
+                        index++
                     }
-                    result.append(mask.value)
                 }
+                result.append(mask.value)
             }
             maskIndex++
         }
